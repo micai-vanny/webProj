@@ -7,14 +7,14 @@
 <body>
 	<script>	
 		var month = 1;
-		var today = new Date(2021, 4, 0);
+		var today = new Date(2020, 12, 0);
 		console.log(today.getDay());
-		var lastDay = new Date(2021, 5, 0);
+		var lastDay = new Date(2021, 1, 0);
 		console.log(lastDay.getDate());
 		
 		var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 		
-/* 		var isTrue = false;
+ 		var isTrue = false;
 		
 		while(!isTrue) {
 			var tbl = '<table border = "1"><tr>';
@@ -31,7 +31,7 @@
 			for (var i = 1; i <= lastDay.getDate(); i++) {
 				tbl += '<td>' + i + '</td>';
 				
-				if(i % 7 == today.getDay()) {
+				if(i % 7 == today.getDay()-2) {
 					tbl += '</tr>';
 				}
 			} 
@@ -39,12 +39,14 @@
 			tbl += '</tr>';
 			tbl += '</table>';
 			
-			if(month == 12) {
+			document.write(tbl);
+			
+			if(month > 12) {
 				isTrue = true;
 			}
-		} */
+		}
 		
- 		var tbl = '<table border = "1"><tr>';
+ /* 		var tbl = '<table border = "1"><tr>';
 		tbl += '<caption>' + month + '월</caption>';
 		for(day of days) {	// 요일 찍혀 나오는 row
 			tbl += '<th>' + day + '</th>';
@@ -61,13 +63,12 @@
 			if(i % 7 == today.getDay()-4) {
 				tbl += '</tr>';
 			}
-		} 
-		
+		} 		
 		tbl += '</tr>';
 		tbl += '</table>';
+		 */
 		
-		
-		document.write(tbl);
+
 	</script>
 </body>
 </html>
