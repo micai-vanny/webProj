@@ -6,32 +6,66 @@
 </head>
 <body>
 	<script>	
-		var month = 3;
-		var today = new Date(2021, 3, 1);
+		var month = 1;
+		var today = new Date(2021, 4, 0);
 		console.log(today.getDay());
-		var lastDay = new Date(2021, 4, 0);
+		var lastDay = new Date(2021, 5, 0);
 		console.log(lastDay.getDate());
 		
-		var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
-		var tbl = '<table border = "1"><tr>';
-		tbl += '<caption>' + month + '월</caption>';
-		for(day of days) {
+		var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		
+/* 		var isTrue = false;
+		
+		while(!isTrue) {
+			var tbl = '<table border = "1"><tr>';
+			tbl += '<caption>' + month++ + '월</caption>';
+			for(day of days) {	// 요일 찍혀 나오는 row
+				tbl += '<th>' + day + '</th>';
+			}
+			tbl += '</tr><tr>';
+
+			for (var i = 0; i <= today.getDay(); i++) {	//  매달 1일 시작하기 전 만큼 빈칸 삽입
+				tbl += '<td></td>';
+			}
 			
+			for (var i = 1; i <= lastDay.getDate(); i++) {
+				tbl += '<td>' + i + '</td>';
+				
+				if(i % 7 == today.getDay()) {
+					tbl += '</tr>';
+				}
+			} 
+			
+			tbl += '</tr>';
+			tbl += '</table>';
+			
+			if(month == 12) {
+				isTrue = true;
+			}
+		} */
+		
+ 		var tbl = '<table border = "1"><tr>';
+		tbl += '<caption>' + month + '월</caption>';
+		for(day of days) {	// 요일 찍혀 나오는 row
 			tbl += '<th>' + day + '</th>';
 		}
-		tbl += '</tr>';
-//		tbl += '<td></td><td></td><td></td><td></td>';
-		for (var i = 1; i <= today.getDay(); i++) {
+		tbl += '</tr><tr>';
+
+		for (var i = 0; i <= today.getDay(); i++) {	//  매달 1일 시작하기 전 만큼 빈칸 삽입
 			tbl += '<td></td>';
 		}
+		
 		for (var i = 1; i <= lastDay.getDate(); i++) {
 			tbl += '<td>' + i + '</td>';
-			if(i % 7 == 0) {
-				tbl += '</tr><tr>';
-			}		
-		}
+			
+			if(i % 7 == today.getDay()-4) {
+				tbl += '</tr>';
+			}
+		} 
+		
 		tbl += '</tr>';
 		tbl += '</table>';
+		
 		
 		document.write(tbl);
 	</script>
