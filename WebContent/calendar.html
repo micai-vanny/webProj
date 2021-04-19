@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>calendar.html</title>
+</head>
+<body>
+	<script>	
+		var month = 1;
+		var today = new Date(2020, 12, 0);
+		console.log(today.getDay());
+		var lastDay = new Date(2021, 1, 0);
+		console.log(lastDay.getDate());
+		
+		var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		
+ 		var isTrue = false;
+		
+		while(!isTrue) {
+			var tbl = '<table border = "1"><tr>';
+			tbl += '<caption>' + month++ + '월</caption>';
+			for(day of days) {	// 요일 찍혀 나오는 row
+				tbl += '<th>' + day + '</th>';
+			}
+			tbl += '</tr><tr>';
+
+			for (var i = 0; i <= today.getDay(); i++) {	//  매달 1일 시작하기 전 만큼 빈칸 삽입
+				tbl += '<td></td>';
+			}
+			
+			for (var i = 1; i <= lastDay.getDate(); i++) {
+				tbl += '<td>' + i + '</td>';
+				
+				if(i % 7 == today.getDay()-2) {
+					tbl += '</tr>';
+				}
+			} 
+			
+			tbl += '</tr>';
+			tbl += '</table>';
+			
+			document.write(tbl);
+			
+			if(month > 12) {
+				isTrue = true;
+			}
+		}
+			
+
+	</script>
+</body>
+</html>
