@@ -1,16 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>domEx.html</title>
-</head>
-<body>
-    <table id = "tbl"></table>
+    <script src="script/domEX.js"></script>
 
     <script>
+        console.log(1); // 실행순서 확인용
+        // ┌>Event 이름
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log(2); // 실행순서 확인용
 
+            // 페이지 로딩 시 회원리스트 출력
+            // 타이틀과 데이터 처리 : table, tr, th, td
+            createTitle('이름', 'ID', '점수', '성별', '기능');
+            createData();
+            
+            // 저장 버튼 클릭시 실행
+            var saveBtn = document.getElementById('saveBtn');
+            console.log(saveBtn);
+            saveBtn.addEventListener('click', saveBtnFnc);
+
+            // 수정 버튼 클릭시 실행
+            var modifyBtn = document.getElementById('modifyBtn');
+            modifyBtn.addEventListener('click', modifyBtnFunc);
+        });
+
+        //   window.onload = function() {  // window.onload: 코드를 완전히 다 읽은 후에 fuction()을 실행
+        //       console.log(2);
+        //       var saveBtn = document.getElementById('saveBtn');
+        //       console.log(saveBtn);
+        //   }
+    </script>
+</head>
+
+<body>
+    <div>
+        <div>이름 : <input type='text' name='name' id='name'></div>
+        <div>I　D : <input type='text' name='id' id='id'></div>
+        <div>점수 : <input type='text' name='score' id='score'></div>
+        <!--┌> 회원리스트의 gender value와 동일할 것-->
+        <div>성별 : <input type='radio' name='gender' value="Male">남성
+            <input type='radio' name='gender' value="Female">여성</div>
+
+        <div>
+            <button id='saveBtn'>저장</button>
+            <button id='modifyBtn'>수정</button>
+        </div>
+    </div>
+    <hr>
+
+    <table id="tbl">
+        <caption>회원리스트</caption>
+    </table>
+
+
+    <script>
+        console.log(3); // 실행순서 확인용
         var p1 = {
             name: 'Hong',
             id: 'user1',
@@ -40,55 +89,7 @@
 
         var tbl = document.getElementById('tbl');
         tbl.setAttribute('border', '1');
-
-        // title 함수 만들기
-        function createTitle() {
-            console.log(arguments); // 코드 하단에 createTitle()의
-                                    // () 안에 있는 arguments들을 확인.
-
-            var tr = document.createElement('tr');
-            for(var i = 0; i < arguments.length; i++){
-                var th = document.createElement('th');
-                th.innerHTML = arguments[i];
-                tr.appendChild(th);
-            }
-
-            tbl.appendChild(tr);
-        }
-
-        // 데이터를 테이블로 생성하는 함수 만들기
-        function createData() {
-            for(var p of persons) {
-            var tr = document.createElement('tr');
-            tr.setAttribute('align', 'center');
-            tr.onmouseover = function () {  // 마우스를 올리면 배경색 라벤더
-                console.log(this.style.backgroundColor = 'lavender');
-            }
-            tr.onmouseout = function() {    // 마우스를 내리면 배경색 없음
-                console.log(this.style.backgroundColor = '');
-            }
-            for(var filed in p){
-                var td = document.createElement('td');
-                td.innerHTML = p[filed];
-                tr.appendChild(td);
-            }
-            
-            var td1 = document.createElement('td'); // button이 들어갈 새로운 td추가
-            var buttons = document.createElement('button'); // button 생성
-            buttons.innerHTML = "삭제"; // button Label 넣어주기
-
-            buttons.onclick = function() {  // button 클릭 시 삭제
-                console.log(this.parentNode.parentNode.remove());
-            }
-
-            td1.appendChild(buttons);   // td1에 button 넣어주기
-            tr.appendChild(td1);    // tr에 td1 추가
-            tbl.appendChild(tr);
-            
-             }
-        }
-        createTitle('Name', 'ID', 'Score', 'Gender', '기능');
-        createData();
     </script>
 </body>
+
 </html>
