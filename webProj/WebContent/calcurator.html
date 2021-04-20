@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calcurator.html</title>
+    <style>
+        div.container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 300px;
+            height: 350px;
+            background-color: purple;
+            justify-content: space-around;
+        }
+
+        .container>div {
+            background-color: lavender;
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 0.5em;
+        }
+
+        .container>div:hover {
+            cursor: pointer;
+        }
+
+        div#display {
+            width: 190px;
+            padding-right: 10px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id='display'>0</div>
+        <div>C</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>*</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>/</div>
+        <div>7</div>
+        <div>8</div>
+        <div>9</div>
+        <div>%</div>
+        <div>0</div>
+        <div>+</div>
+        <div>-</div>
+        <div>=</div>
+    </div>
+
+    <script>
+        var dp = document.getElementById('display');
+        var btns = document.querySelectorAll('div.container>div');
+
+
+        for (var i = 0; i < btns.length; i++) {
+
+            btns[i].onclick = clickEvent;
+        }
+
+        var firstVal = 0,
+            lastVal = 0,
+            oper = null,
+            result = 0;
+
+        function clickEvent() {
+            var touchVal = this.innerHTML;
+            // dp.innerHTML = parseInt(touchVal);
+
+            if(isNaN(touchVal)){    // 문자(*,/,+,-,=,c)가 들어오면??
+                if (touchVal == 'C') {
+                    firstVal = 0;
+                    lastVal = 0;
+                    oper = null;
+                }else if(touchVal != '='){
+                    oper = touchVal;
+                }else {
+                    if(oper == '+'){
+                        result =  parseInt(firstVal) + parseInt(lastVal)
+                        dp.innerHTML = result;
+                    }else if(oper == '-') {
+                        result = (firstVal - lastVal)
+                    }else if(oper == '*'){
+                        result = (firstVal * lastVal)
+                        dp.innerHTML = result;
+                    }else if(oper == '/'){
+                        result = (firstVal / lastVal)
+                        dp.innerHTML = result;
+                    }else if(oper == '%'){
+                        result = (firstVal % lastVal)
+                        dp.innerHTML = result;
+                    }
+                    firstVal = result;
+                    lastVal = 0;
+                    oper = null;
+                    return; // function에서 return을 만나면 종료.
+                }
+            }else {     // 숫자가 들어오면???
+                if(oper) {
+                    // lastVal
+                    lastVal += touchVal;
+                }else {
+                    // firstVal
+                    firstVal += touchVal;
+                }
+            }
+            dp.innerHTML = parseInt(firstVal) + oper + (lastVal == 0 ? '' : parseInt(lastVal));
+        }
+    </script>
+</body>
+
+</html>

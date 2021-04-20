@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dom2.html</title>
+</head>
+<body>
+    <table id = "tbl" border = "1">
+        <tbody>
+        <tr>
+            <th>이름</th>
+            <th>점수</th>
+            <th>기능</th>
+        </tr>
+        <tr>
+            <td id = "hong">hong</td>
+            <td>80</td>
+            <td><button>삭제1</button></td>
+        </tr>
+        <tr>
+            <td>choi</td>
+            <td>95</td>
+            <td><button>삭제2</button></td>
+        </tr>
+        </tbody>
+    </table>
+    <button>삭제</button>
+    <script>                    //┌>tr태그 밑의 td 밑의 button을 가져오겠읍다
+        var btns = document.querySelectorAll('tr>td>button');
+        for(var i = 0; i < btns.length; i++){
+            btns[i].onclick = function() {
+                var delVal = this.parentNode.parentNode.childNodes[1].firstChild.nodeValue;
+                delFunc(delVal) // 데이터베이스에서 삭제하는 기능 호출
+                this.parentNode.parentNode.remove();
+            }
+        }
+        console.log(btns);
+
+        function delFunc(val) { // 데이터베이스에서 삭제하는 기능 구현
+            //remove(val);
+            console.log(`${val} 삭제됨`)
+        }
+    </script>
+</body>
+</html>
