@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>domEx.html</title>
+</head>
+<body>
+    <table id = "tbl"></table>
+
+    <script>
+
+        var p1 = {
+            name: 'Hong',
+            id: 'user1',
+            score: 80,
+            gender: 'Male'
+        }
+        var p2 = {
+            name: 'Choi',
+            id: 'user2',
+            score: 84,
+            gender: 'Female'
+        }
+        var p3 = {
+            name: 'shin',
+            id: 'user3',
+            score: 86,
+            gender: 'Male'
+        }
+        var p4 = {
+            name: 'Kim',
+            id: 'user4',
+            score: 82,
+            gender: 'Female'
+        }
+
+        var persons = [p1, p2, p3, p4];
+
+        var tbl = document.getElementById('tbl');
+        tbl.setAttribute('border', '1');
+
+        // title 함수 만들기
+        function createTitle() {
+            console.log(arguments); // 코드 하단에 createTitle()의
+                                    // () 안에 있는 arguments들을 확인.
+
+            var tr = document.createElement('tr');
+            for(var i = 0; i < arguments.length; i++){
+                var th = document.createElement('th');
+                th.innerHTML = arguments[i];
+                tr.appendChild(th);
+            }
+
+            tbl.appendChild(tr);
+        }
+
+        // 데이터를 테이블로 생성하는 함수 만들기
+        function createData() {
+            for(var p of persons) {
+            var tr = document.createElement('tr');
+            tr.setAttribute('align', 'center');
+            tr.onmouseover = function () {  // 마우스를 올리면 배경색 라벤더
+                console.log(this.style.backgroundColor = 'lavender');
+            }
+            tr.onmouseout = function() {    // 마우스를 내리면 배경색 없음
+                console.log(this.style.backgroundColor = '');
+            }
+            for(var filed in p){
+                var td = document.createElement('td');
+                td.innerHTML = p[filed];
+                tr.appendChild(td);
+            }
+            
+            var td1 = document.createElement('td'); // button이 들어갈 새로운 td추가
+            var buttons = document.createElement('button'); // button 생성
+            buttons.innerHTML = "삭제"; // button Label 넣어주기
+
+            buttons.onclick = function() {  // button 클릭 시 삭제
+                console.log(this.parentNode.parentNode.remove());
+            }
+
+            td1.appendChild(buttons);   // td1에 button 넣어주기
+            tr.appendChild(td1);    // tr에 td1 추가
+            tbl.appendChild(tr);
+            
+             }
+        }
+        createTitle('Name', 'ID', 'Score', 'Gender', '기능');
+        createData();
+    </script>
+</body>
+</html>
