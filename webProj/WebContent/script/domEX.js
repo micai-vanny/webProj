@@ -22,12 +22,12 @@ function createData() {
     for (var p of persons) {
         var tr = document.createElement('tr');
         tr.setAttribute('align', 'center');
-        tr.setAttribute('id', p.id);    // tr의 id값을 키값으로 지정
+        tr.setAttribute('id', p.id); // tr의 id값을 키값으로 지정
         tr.onmouseover = mouseOverFunc; // 마우스를 올리면 배경색 라벤더
         tr.onmouseout = mouseOutFunc; // 마우스를 내리면 배경색 없음
 
         for (var filed in p) {
-            if (filed == 'id') {    // id를 클릭할 때 마다 input에 해당 필드의 값 출력
+            if (filed == 'id') { // id를 클릭할 때 마다 input에 해당 필드의 값 출력
                 var td = document.createElement('td');
                 td.onclick = modifyFunc;
                 td.innerHTML = p[filed];
@@ -36,7 +36,7 @@ function createData() {
                 var td = document.createElement('td');
                 // td.innerHTML = p[filed];
                 var link = document.createElement('a');
-                link.setAttribute('href', 'dom.jsp?name='+p.name+'&id='+p.id+'&score='+p.score+'&gender='+p.gender);
+                link.setAttribute('href', 'dom.jsp?name=' + p.name + '&id=' + p.id + '&score=' + p.score + '&gender=' + p.gender);
                 link.innerHTML = p.name;
                 td.appendChild(link);
                 tr.appendChild(td);
@@ -76,7 +76,7 @@ function deleteRow() {
 function modifyFunc() {
     console.log(this);
     var idVal = this.innerHTML; // id를 this로 기준
-    var nameVal = this.previousSibling.innerHTML; //id 앞의 name(previousSibling)의 값(.innerHTML) 받아옴
+    var nameVal = this.previousSibling.firstChild.innerHTML; //id 앞의 name(previousSibling.firstChild)의 값(.innerHTML) 받아옴
     var scoreVal = this.nextSibling.innerHTML; // id 뒤의 score(nextSibling)의 값(.innerHTML) 받아옴
     var genderVal = this.parentNode.childNodes[3].innerHTML; // id의 부모노드(tr)의 3번째 자식(gender)의 값(.innerHTML) 받아옴
     console.log(this.parentNode);
@@ -143,11 +143,15 @@ function saveBtnFnc() {
 
 function modifyBtnFunc() {
     var id = document.getElementById('id').value;
-    var targetTr = document.getElementById(id);
-    targetTr.children[0].innerHTML = 
-        document.getElementById('name').value;
-    targetTr.children[2].innerHTML = 
-        document.getElementById('score').value;
-    targetTr.children[3].innerHTML = 
-        document.querySelector('input[name="gender"]:checked').value;
+    // 시용자가 변경한 값을 반영
+    var name = document.getElementById('name').value;
+    var score = document.getElementById('score').value;
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+
+    var targetTr = document.getElementById(id); // id로 tr을 찾아옴
+    
+    targetTr.children[0].innerHTML = '<a href ="dom.jsp?name='+name+'&id='+id+'&score='+score+'&gender='+gender+'">'+name+'</a>';
+    // <a href = 'dom.js?name=?&id=?score=?&gender=?'>
+    targetTr.children[2].innerHTML = score;
+    targetTr.children[3].innerHTML = gender;
 }
