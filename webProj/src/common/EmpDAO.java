@@ -20,8 +20,8 @@ public class EmpDAO {
 		Employee empl = new Employee();
 		
 		String sql1 = "select employees_seq.nextval from dual";
-		String sql2 = "insert into emp_temp(employee_id, last_name, email, hire_date, job_id)" +
-				"values(?, ?, ?, ?, ?)";
+		String sql2 = "insert into emp_temp(employee_id, first_name, last_name, email, salary, hire_date, job_id, department_id)" +
+				"values(?, ?, ?, ?, ?, ?, ?, 50)";
 		try {int empId = 0;
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql1);
@@ -31,20 +31,24 @@ public class EmpDAO {
 			
 			psmt = conn.prepareStatement(sql2);	// insert sql 전달
 			psmt.setInt(1, empId);
-			psmt.setString(2, emp.getLastName());
-			psmt.setString(3, emp.getEmail());
-			psmt.setString(4, emp.getHireDate());
-			psmt.setString(5, emp.getJobId());
-			
+			psmt.setString(2, emp.getFirstName());
+			psmt.setString(3, emp.getLastName());
+			psmt.setString(4, emp.getEmail());
+			psmt.setInt(5, emp.getSalary());
+			psmt.setString(6, emp.getHireDate());
+			psmt.setString(7, emp.getJobId());
+						
 			int up = psmt.executeUpdate();
 			System.out.println(up + "건 입력됨.");
 			
 			// ↓입력한 값을 반환해주기 위함.
 			empl.setEmployeeId(empId);
-			empl.setEmail(emp.getEmail());
+			empl.setFirstName(emp.getFirstName());
 			empl.setLastName(emp.getLastName());
-			empl.setJobId(emp.getJobId());
+			empl.setEmail(emp.getEmail());
+			empl.setSalary(emp.getSalary());
 			empl.setHireDate(emp.getHireDate());
+			empl.setJobId(emp.getJobId());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,15 +58,17 @@ public class EmpDAO {
 	}
 	
 	public void insertEmp(Employee emp) {
-		String sql = "insert into emp_temp(employee_id, last_name, email, hire_date, job_id)"
-				+ "values ((select max(employee_id)+1 from emp_temp), ?, ?, ?, ?)";
+		String sql = "insert into emp_temp(employee_id,first_name, last_name, email, salary, hire_date, job_id, department_id)"
+				+ "values ((select max(employee_id)+1 from emp_temp), ?, ?, ?, ?, ?, ?, 50)";
 		conn = DBCon.getConnect();
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, emp.getLastName());
-			psmt.setString(2, emp.getEmail());
-			psmt.setString(3, emp.getHireDate());
-			psmt.setString(4, emp.getJobId());
+			psmt.setString(1, emp.getFirstName());
+			psmt.setString(2, emp.getLastName());
+			psmt.setString(3, emp.getEmail());
+			psmt.setString(4, emp.getHireDate());
+			psmt.setString(5, emp.getJobId());
+			psmt.setInt(6, emp.getSalary());
 			
 			int up = psmt.executeUpdate();
 			System.out.println(up + "건 입력됨.");
@@ -104,6 +110,8 @@ public class EmpDAO {
 				emp.setLastName(rs.getString("last_name"));
 				emp.setEmail(rs.getString("email"));
 				emp.setSalary(rs.getInt("salary"));
+				emp.setHireDate(rs.getString("hire_date"));
+				emp.setJobId(rs.getString("job_id"));
 
 				employees.add(emp);
 			}
@@ -152,6 +160,8 @@ public class EmpDAO {
 				emp.setLastName(rs.getString("last_name"));
 				emp.setEmail(rs.getString("email"));
 				emp.setSalary(rs.getInt("salary"));
+				emp.setHireDate(rs.getString("hire_date"));
+				emp.setJobId(rs.getString("job_id"));
 
 				employees.add(emp);
 			}
