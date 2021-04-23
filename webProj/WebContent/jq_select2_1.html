@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_select2_1.html</title>
+<script src='http://localhost/webProj/Js/jquery-3.6.0.min.js'></script>
+<script>
+	$(function() {
+		$('#menu>li').first() //
+		.css({
+			"background-color" : "#ff0"
+		});
+
+		$('.menu>li:last').css({
+			"background-color" : "#0ff"
+		});
+		
+		$('#menu>li:odd') //
+		.css({
+			"background-color" : "lightgray"
+		});
+							//┌> 인덱스값이 아니라 순번임.
+		$('.menu>li:nth-child(2)') //
+		.css({
+			"background-color" : "lavender"
+		});
+							
+		$('li:last-of-type') //
+		.css({
+			"background-color" : "red"
+		});
+	});
+</script>
+</head>
+<body>
+	<h1>탐색 선택자</h1>
+	<ul id="menu">
+		<li>내용1</li>
+		<li>내용2</li>
+		<li>내용3</li>
+		<li>내용4</li>
+	</ul>
+	
+	<ul class="menu">
+		<li>내용1</li>
+		<li>내용2</li>
+		<li>내용3</li>
+		<li>내용4</li>
+	</ul>
+</body>
+</html>

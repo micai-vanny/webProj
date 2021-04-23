@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "show"></div>
+    <script>
+        var xhtp = new XMLHttpRequest();
+        xhtp.open('get', 'employees.xml');
+        xhtp.send();
+        xhtp.onreadystatechange = function() {
+            if(xhtp.readyState == 4 && xhtp.status == 200) {
+                console.log(xhtp.responseXML);
+                var doc = xhtp.responseXML;
+                var records = doc.getElementsByTagName('record');
+
+                var ul = document.createElement('ul');
+
+                for (var i = 0; i < records.length; i++) {
+                    var li = document.createElement('li');
+                    console.log(records[i].children[0]);
+                    var text = document.createTextNode("사원번호 : " + records[i].children[0].innerHTML + " | ");
+                    var text1 = document.createTextNode("이  름 : " + records[i].children[1].innerHTML + " | ");
+                    var text2 = document.createTextNode("연 락 처 : " + records[i].children[5].innerHTML + " | ");
+                    li.appendChild(text);
+                    li.appendChild(text1);
+                    li.appendChild(text2);
+                    ul.appendChild(li);
+                    
+                }
+                document.body.appendChild(ul);
+
+            }
+        }
+    </script>
+</body>
+</html>

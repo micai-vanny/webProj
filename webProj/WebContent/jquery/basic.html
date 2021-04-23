@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>basic.html</title>
+<style>
+	section#sec1>h1 {
+		background-color: yellow;
+	}
+</style>
+<script src = 'http://localhost/webProj/Js/jquery-3.6.0.min.js'></script>
+<script>
+//	document.addEventListener('DOMCn...', function() {})
+	$(document).ready(function() {
+		sec1 = $('#sec1');		// ┌> 자식 중에 0번째 인덱스값 호출
+		console.log(sec1.children().eq(0).html());
+										// └> innerHTML
+										
+		$('#sec1>h1').css('color', 'red');
+		$('.sec1>h1').css('color', 'blue');
+		$('.sec1>ul').children().eq(1).css('background-color', 'pink');
+		$('li').eq(0).parents().css('background-color', 'lavender');
+		
+	});
+</script>
+</head>
+
+<body>
+	<h1>Apple</h1>
+	<section id = 'sec1'>
+		<h1>Banana</h1>
+		<ul>
+			<li>Yellow</li>
+			<li>Red</li>
+		</ul>
+	</section>
+	
+	<section class = 'sec1'>
+		<h1>Cherry</h1>
+		<ul>
+			<li>Yellow</li>
+			<li>Red</li>
+		</ul>
+	</section>
+</body>
+</html>
