@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery/each3.html</title>
+    <script src="../Js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '../MOCK_DATA.json',
+                dataType: 'json',
+                success: successCallFnc,
+                error: errorCallFnc
+            }); // XMLHttpRequest(); xhtp.resultText
+        });
+
+        function successCallFnc(result) {
+            console.log(result);
+            let tbl = $('<table />');
+            tbl.attr('border', '1');
+            $.each(result, function (i, o) {
+                let trTag = $('<tr />'); // row 생성
+                trTag.attr('id', o.id);
+                trTag.mouseover(mouserOverFnc);
+                trTag.mouseout(mouseOutFnc);
+                let btn = $('<button />').html('Del');
+                btn.click((evnt) => {
+                    console.log($(this),evnt);  
+                    // $(this)의 의미 -> function인 경우 event 대상, arrow function인 경우 object
+                    evnt.currentTarget.parentNode.parentNode().remove();
+                });
+                trTag.append(
+                    $('<td />').html(o.id), //
+                    $('<td />').html(o.first_name), //
+                    $('<td />').html(o.last_name), //
+                    $('<td />').html(o.email), //
+                    $('<td />').append(btn)
+                );
+                tbl.append(trTag);
+            });
+            $('#show').append(tbl) // <p>1</p><p>2</p><p>3<p/>...<p>20</p>
+        }
+
+        function errorCallFnc(reject) {
+            console.log(reject);
+        }
+
+        function mouserOverFnc() {
+            $(this).css('background-color', 'lavender');
+        }
+
+        function mouseOutFnc() {
+            $(this).css('background-color','');
+        }
+
+        function clickFnc() {
+            alert($(this).attr('id'));
+        }
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>

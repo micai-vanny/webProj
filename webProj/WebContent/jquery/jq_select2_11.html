@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_select2_11.html</title>
+<script src = "../Js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		$("#wrap a[target]").css({"color":"#f00"});	// target 속성을 포함하는 요소만 선택
+		$("#wrap a[href^=https)]").css({"color":"#0f0"});	// href 속성 값이 "https"로 시작하는 요소만 선택
+		$("#wrap a[href$=net]").css({"color":"#00f"});	// href 속성 값이 "net"으로 끝나는 요소만 선택
+		$("#wrap a[href*=google]").css({"color":"#000"});	// href 속성값에 "google"이 포함된 요소만 선택
+		$("#wrap a[member_f:text]").css({"background-color":"#ff0"});	// input 요소 중 type 속성값이 text인 요소만 선택
+		$("#wrap a[member_f:password]").css({"background-color":"#0ff"});	// input 요소 중 type 속성값이 password인 요소만 선택
+	});
+</script>
+</head>
+<body>
+	<div id = 'wrap'>
+		<p><a href = 'https://easyspub.co.kr' target = '_blank'>EasysPub</a></p>
+		<p><a href = 'https://naver.com'>Naver</a></p>
+		<p><a href = 'https://google.com'>Google</a></p>
+		<p><a href = 'https://daum.net'>Daum</a></p>
+	</div>
+	<form action="#" method = "get" id = "member_f">
+		<p>
+			<label for = "user_id">아이디</label><input type = "text" name = "user_id" id = "user_id">
+		</p>
+		<p>
+			<label for = "user_pw">비밀번호</label><input type = "password" name = "user_pw" id = "user_pw">
+		</p>
+	</form>
+</body>
+</html>

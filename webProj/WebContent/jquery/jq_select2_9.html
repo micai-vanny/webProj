@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>교재를 따라해보자</title>
+</head>
+<script src = "../Js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		var arr1 = ["서울", "대전", "부산", "대구"];
+		var arr2 = ["한국", "미국", "일본","중국"];
+		var obj = {
+				"name":"정부장",
+				"area":"서울"
+		}
+		
+		var idxNum = $.inArray("부산",arr1);
+		console.log(idxNum);
+		
+		var okArray1 = $.isArray(arr1);
+		var okArray2 = $.isArray(obj);
+		console.log(okArray1);	// 배열 객체면 true
+		console.log(okArray2);	// 배열 객체가 아니면 false
+		
+		$.merge(arr2,arr1);	// 각 배열을 병합해서 보여줌
+		console.log(arr2);
+	});
+</script>
+<body>
+
+</body>
+</html>
