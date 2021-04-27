@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_event1_2.html</title>
+    <script src="../Js/jquery-3.6.0.min.js"></script>
+    <style>
+        .content {
+            background-color: yellow;
+        }
+
+        span {
+            display: inline-block;
+            width: 50vw;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <p><button class="btn1">클릭1</button></p>
+    <p>내용1</p>
+    <p><button class="btn2">클릭2</button></p>
+    <p>내용2</p>
+
+    <input type="text" name="firstName" value="Dongdong">
+    <input type="number" name="age" value=4>
+    <button id="btn3">추가</button>
+    <p id='show'></p>
+
+    <script>
+        $('#btn3').click(function () {
+            let fName = $('input[type="text"]').val();
+            let age = $('input[type="number"]').val();
+            let btn = $('<button />').html('Del');
+            
+            btn.click(function () { // input으로 받아온 값이 출력된 span과 함께 생성된 btn을 삭제
+                $(this).parent().remove();
+            });
+
+            let span = $('<span />').html(fName + ', ' + age);  //span 안에다 fName이랑 age입력
+            
+            span.on({   // span에 mouseover/mouseout 이벤트 넣어줌
+                mouseover: function () {
+                    $(this).css({
+                        'background-color': 'yellow'
+                    });
+                },
+                mouseout: function () {
+                    $(this).css({
+                        'background-color': ''
+                    });
+                }
+            });
+
+            // 위에 만든 p id = 'show'에 div 생성을 append -> div 안에 span과 btn을 append
+            $('p#show').append($('<div />')
+                .append(span)
+                .append(btn));
+        });
+
+        $('.btn1').click(function () {  // 1번째 버튼을 누르면 내용1이 Hello World!로 변경
+            $('p:contains(내용1)').html('Hello World!');
+        });
+
+        $('.btn2').on('click', function () {    // 2번째 버튼을 누르면 내용2의 글자색이 red로 변경.
+            $(this).parent().next().css('color', 'red')
+                .attr('id', 'content2') // 내용2에 content2 id 속성 추가
+                .addClass('content');   // 내용2에 content 클래스 속성 추가 : <style>에 클래스 css효과 존재함.
+                                        // background-color: yellow
+        });
+
+        $('p:eq(1)').on({   // <p>의 2번째 자식 : 내용 1에 mouseover/out 이벤트 지정.
+            mouseover: function () {
+                $(this).css({
+                    'background-color': 'lavender',
+                    'font-size': '30px'
+                });
+            },
+            mouseout: function () {
+                $(this).css({
+                    'background-color': '',
+                    'font-size': '15px'
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

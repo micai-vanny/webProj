@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가위바위보 게임</title>
+    <script src = "../Js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            let srcVal = $("#sec_1 img").attr("src");
+            console.log(srcVal);
+
+            $("#sec_1 img")
+            .attr({
+                "width":200,
+                "src": srcVal.replace("scissors.PNG", "Rock.PNG"),
+                "alt":"바위"
+            })
+            .removeAttr("border");
+        });
+    </script>
+</head>
+<body>
+    <section id = 'sec_1'>
+        <p>
+            <img src = "../images/scissors.PNG" alt = '가위' border = '2'>
+        </p>
+    </section>
+</body>
+</html>

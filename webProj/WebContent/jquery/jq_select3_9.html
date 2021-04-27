@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_select3_9.html</title>
+    <script src="../Js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            $("<li>appendTo</li>").appendTo("#listZone");
+            $("#listZone").prepend("<li>prepend</li>");
+        });
+    </script>
+</head>
+<body>
+    <div id = 'wrap'>
+        <p>내용 1</p>
+        <p>내용 2</p>
+        <p>내용 3</p>
+    </div>
+    
+    <ul id = "listZone">
+        <li>리스트</li>
+    </ul>
+
+    <script>
+        $("<p>insertAfter</p>").insertAfter("#wrap p:eq(1)");
+        $("#wrap p: eq(1)").before("<p>Before</p>");
+        $("<p>insertBefore</p>").insertBefore("#wrap p:eq(0)");
+        $('#wrap').prepend('<p>After</p>');
+        $('#wrap p').eq(2).after('<p>After</p>');
+        $('<p>AppendTo</p>').appendTo('#wrap');
+    </script>
+</body>
+</html>
