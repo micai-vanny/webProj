@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_ajax4.html</title>
+
+    <script src="../Js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+           $.ajax({
+        	   url: '../ajax.html',
+        	   type: 'get', //post
+        	   data: 'p1=hello&p2=nice',
+        	   dataType: 'html',
+        	   success: function(result) {
+        		   console.log(result);
+        	   },
+        	   error: function(reject) {
+        		   window.alert(reject.statusText);
+        		   console.log(`에러코드 : ${reject.status}, 에러메세지 : ${reject.statusText}`);
+        	   }
+           });
+        })
+        
+    </script>
+</head>
+<body>
+	<form action="memberServlet.do" method = 'post'>
+		ID: <input type = "number" name = "m_id" id = "m_id" value = 1 /><br>
+		이름: <input type = "text" name = "m_name" id = "m_name" value = "dongdong" /><br>
+		나이: <input type = "number" name = "m_age" id = "m_age" value = 4 /><br>
+		<input type = "submit" value ="저장">
+		
+	</form>
+    <div id = "show"></div>
+</body>
+</html>

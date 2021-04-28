@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_event2_4.html</title>
+    <script src="../Js/jquery-3.6.0.min.js"></script>
+    <style>
+        #show {
+            background-color: yellow;
+            width: 300px;
+            height: 200px;
+        }
+
+        .item {
+            width: 50px;
+            height: 30px;
+            display: inline-block;
+            background-color: aqua;
+            border: 1px dotted greenyellow;
+        }
+    </style>
+    <script>
+        $(function(){
+            $('#name').keypress(function(e){    // 입력한 문자열 등록
+                if(e.keyCode == 13){
+                    let inputVal = $(this).val();
+                    console.log(inputVal);
+                    $('#show').append($('<div />').html(inputVal).addClass('item'));
+                    $(this).val('');
+                }
+            });
+
+            $('#eman').bind('keydown', function(e) {  // 입력된 문자열 삭제
+                if(e.keyCode == 13){
+                    let iword = $(this).val();
+                    //$('#show div:contains('+iword+')').remove();
+                    let contents = $('#show').contents();
+                    for(let i = 0; i<contents.length; i++){
+                        if(contents[i].innerHTML == iword){
+                            contents[i].remove();
+                        }
+                    }
+                    console.log(contents);
+
+                    $(this).val('');
+                }
+            });
+
+            $('#name').focus();
+        })
+    </script>
+</head>
+<body>
+    <input type = 'text' name = 'name' id = 'name'>
+    <div id = 'show'></div>
+    <input type = 'text' name = 'eman' id = 'eman'>
+</body>
+</html>

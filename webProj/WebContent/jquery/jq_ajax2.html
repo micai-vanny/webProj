@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_ajax2.html</title>
+    <style>
+        tr:nth-of-type(2n) {    /*짝수 행에 background-color 지정*/
+            background-color: hotpink;
+        }
+    </style>
+    <script src="../Js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.get('../MOCK_DATA.json',function(data){
+                console.log(data);
+                let $table = $('<table />').attr('border', '1');
+                for(let i = 0; i<data.length; i++){
+                    let $tr = $('<tr />');
+                    let $td_id = $('<td />').html(data[i].id);
+                    let $td_fName = $('<td />').html(data[i].first_name);
+                    let $td_lName = $('<td />').html(data[i].last_name);
+                    let $td_em = $('<td />').html(data[i].email);
+
+                    $tr.append($td_id, $td_fName, $td_lName, $td_em);
+                    $table.append($tr);
+                }
+                $('#show').append($table);
+            }, 'json');
+            // $('#show').html('hello');
+        })
+        
+    </script>
+</head>
+<body>
+    <div id = "show"></div>
+</body>
+</html>

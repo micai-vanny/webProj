@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_ajax1.html</title>
+    <script src="../Js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {//┌>jq_selecet_10.html의 어쩌구를 불러와서 show에 넣어주쇼
+            $('#show').load('jq_select1_10.html div#wrap', function(a,b,c) {
+                console.log(a,b,c);
+            });
+        })
+    </script>
+</head>
+<body>
+    <div id = 'show'></div>
+</body>
+</html>
