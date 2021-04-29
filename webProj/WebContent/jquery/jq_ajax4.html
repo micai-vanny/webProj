@@ -1,39 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jq_ajax4.html</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jq_ajax4.html</title>
 
-    <script src="../Js/jquery-3.6.0.min.js"></script>
-    <script>
+<script src="../Js/jquery-3.6.0.min.js"></script>
+<script>
         $(document).ready(function(){
            $.ajax({
-        	   url: '../ajax.html',
+        	   url: 'memberServlet.do',
         	   type: 'get', //post
         	   data: 'p1=hello&p2=nice',
-        	   dataType: 'html',
-        	   success: function(result) {
-        		   console.log(result);
-        	   },
+        	   dataType: 'json',
+        	   success: showlist,
         	   error: function(reject) {
         		   window.alert(reject.statusText);
         		   console.log(`에러코드 : ${reject.status}, 에러메세지 : ${reject.statusText}`);
         	   }
            });
+           // 한 건 입력 작업 -> ajax
+           $('#frm').on('submit', function(e) {
+				e.preventDefault();	//기존의 submit 기능을 취소하고 
+									//아래에 만드는 기능으로 사용하겠당...
+									//서블릿 페이지로 이동 안함.
+				$.ajax({
+					url: $('#frm').attr('action'), //"memberServlet.do" 
+					data: 'm_id='+$('#m_id').val()+'&m_name='+$('#m_name').val()+'&m_age='+$('#m_age').val(), // key=val&key2=val2&...
+					dataType: 'json',
+					type: 'post',
+					success: createRow,
+					error: function(reject) {
+						console.log(reject);
+					}
+				});
+			});
         })
         
+        function showlist(result) {
+        	console.log(result);
+ 		   
+ 		   let $table = $('<table id = "tbl" />').attr('border', '1');
+ 		   
+ 		   let title = { m_id: 'ID',
+ 				   		  m_name: 'Name',
+ 				   		  m_age: 'Age'}
+ 		   
+ 		   //테이블 타이틀 만들기
+ 		   let $tr = $('<tr />');
+ 		   for(let field in title) {
+ 			   $tr.append(
+ 					$('<th />').html(title[field])	   
+ 			   );
+ 		   }
+ 		   $tr.append($('<th />').html("Fnc")) 	// 기능 타이틀 추가
+ 		   $table.append($tr);
+ 		   
+ 		   //받아온 json file로 table 만들기
+ 		   for(let i = 0; i<result.length; i++){
+ 			   let $btns = $('<button />').html("삭제");
+ 			   $btns.click(delRow);
+ 			   let $tr = $('<tr />');
+ 			   $tr.append(
+ 			 	  	$('<td />').html(result[i].ID),
+ 			 	  	$('<td />').html(result[i].Name),
+ 			 	  	$('<td />').html(result[i].Age),
+ 			 	  	$('<td />').append($btns)
+ 			   );
+ 			   $table.append($tr);
+ 		   }
+ 		   
+ 		   $('#show').append($table);
+		}
+        
+        function createRow(result) {
+        	console.log(result);
+			
+        	// 신규 입력된 데이터를 화면에 추가로 보여주기(테이블에 행 추가)
+			let $table = $('#tbl');
+			
+        	let $buttons = $('<button />').html("삭제");
+        	$buttons.click(delRow);
+			let $trTag = $('<tr />');
+			$trTag.append(
+				$('<td />').html(result.ID),
+				$('<td />').html(result.Name),
+				$('<td />').html(result.Age),
+				$('<td />').append($buttons)
+			);
+			
+			$table.append($trTag);
+			
+		}
+        
+        function delRow() {//			┌>부모의 부모 : tr   ┌>첫번째 자식의 html
+        	let id = $(this).parent().parent().children().eq(0).html();
+        //										└>tr의 자식들중
+        	let delTr = $(this).parent().parent();	// success 안에서 바로 넣으니까 안 됨.
+        											// 변수에 이렇게 담아서 success 안에서는 변수 사용.
+        	//db에서 삭제
+        	$.ajax({
+        		url: '../MemberDelServlet',
+        		data: 'ID='+ id,
+        		success: function() {
+        			console.log('삭제 후 처리..');
+        			delTr.remove();	// 화면에서 삭제
+				},
+				error: function(reject) {
+					console.log(reject);
+				}
+        	});
+		}
+      
     </script>
 </head>
 <body>
-	<form action="memberServlet.do" method = 'post'>
-		ID: <input type = "number" name = "m_id" id = "m_id" value = 1 /><br>
-		이름: <input type = "text" name = "m_name" id = "m_name" value = "dongdong" /><br>
-		나이: <input type = "number" name = "m_age" id = "m_age" value = 4 /><br>
-		<input type = "submit" value ="저장">
-		
+	<form id="frm" action="memberServlet.do" method='post'>
+		ID: <input type="number" name="m_id" id="m_id" value=1 /><br>
+		이름: <input type="text" name="m_name" id="m_name" value="dongdong" /><br>
+		나이: <input type="number" name="m_age" id="m_age" value=4 /><br>
+		<input type="submit" value="저장">
+
 	</form>
-    <div id = "show"></div>
+	<div id="show"></div>
 </body>
 </html>
