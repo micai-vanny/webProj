@@ -3,13 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <title>jquery/upload.html</title>
+<style>
+#img {
+	height: 220px;
+	width: 180px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	$(document).ready(function () {
+		// DB에 있는 data를 화면에 출력 <div><table></table></div>
+		$.ajax({
+			url: '../getFileListServlet',
+			dataType: 'json',	// json 파일을 object로
+			success: function(result) {
+				// table을 사용해서 리스트를 출력
+				console.log(result);
+				
+				var obj = result;
+				
+				let tbl = $('<table />');
+				tbl.attr('border','1');
+				
+				for(var data of obj){
+					let tr = $('<tr />');
+					for(var field in data){
+						tr.append(
+							$('<td />').html(data[field])
+						);
+					}
+					tbl.append(tr);
+				}
+				
+				$('#show').append(tbl);	
+			},
+			error: function(reject) {
+				console.log(reject);
+			}
+		});
+		
+		// 파일을 선택하면 이미지가 나타나도록 하는 부분
+		$('#filename').change(function () {
+			for(let file of this.files){
+				$('#img').attr('src', URL.createObjectURL(file));
+			}
+		});
+		
+		// submit을 누르면 실행되는 것
+		$('#frm').submit(function(e) {
+			e.preventDefault();
+			let frm = document.getElementById('frm');
+			let data = new FormData(frm);
+			for(let k of data.entries()){
+				console.log(k);	
+			}
+						
+			// 비동기 호출 -> 파일 업로드 서블릿
+			$.ajax({
+				contentType: false,
+				processData: false,
+				url: $('#frm').attr('action'),
+				type: 'post',
+				dataType: 'json',
+				data: data,
+				success: function(result) {
+					console.log(result);
+				},
+				error: function(reject) {
+					console.log(reject);
+				}
+			});
+		});
+	});
+</script>
 </head>
 <body>
-	<h1>Ajax 파일 업로드</h1><!--  				  				┌> file이 넘어가면 이거 꼭 있어줘야 함 -->
-	<form id ='frm' action='uploadServlet' method ='post' enctype='multipart/form-data'>
-		이름 : <input type="text" name = "name" value = "동동이">
-		파일 : <input type="file" name = "file">
-		<input type = "submit">
+	<h1>Ajax 파일 업로드</h1>
+	<!--  				  										┌> file이 넘어가면 이거 꼭 있어줘야 함 -->
+	<form id='frm' action='../fileUploadServlet' method='post' enctype='multipart/form-data'>
+	<div id = 'show'></div><br><br>
+		<table border="1">
+			<tr>
+				<td><label for="num">번호</label></td>
+				<td><input type="text" name="num" id="num"></td>
+				<td rowspan="4"><img src="" alt="선택한 파일" id="img"></td>
+			</tr>
+			<tr>
+				<td><label for="author">저자</label></td>
+				<td><input type="text" name="author" id="author"></td>
+			</tr>
+			<tr>
+				<td><label for="title">제목</label></td>
+				<td><input type="text" name="title" id="title"></td>
+			</tr>
+			<tr>
+				<td><label for="filename">파일첨부</label></td>
+				<td><input type="file" name="filename" id="filename"></td>
+			</tr>
+			<tr>
+				<td colspan="3"><input type="submit"> <input
+					type="reset"></td>
+			</tr>
+		</table>
 	</form>
 </body>
 </html>

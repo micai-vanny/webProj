@@ -1,7 +1,6 @@
 //data.js
 
-var data = [
-	{
+var data = [{
 		title: 'All Day Event',
 		start: '2021-05-01'
 	},
