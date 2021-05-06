@@ -8,8 +8,13 @@
 	height: 220px;
 	width: 180px;
 }
+
+#show {
+	padding: 15px;
+}
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
 		// DB에 있는 data를 화면에 출력 <div><table></table></div>
@@ -20,27 +25,100 @@
 				// table을 사용해서 리스트를 출력
 				console.log(result);
 				
-				var obj = result;
+				let tbl = $('<table id = "tbl"/>').attr('border','1');
 				
-				let tbl = $('<table />');
-				tbl.attr('border','1');
+				tbl.append(getTitle());
 				
-				for(var data of obj){
+				for(let obj of result){
 					let tr = $('<tr />');
-					for(var field in data){
-						tr.append(
-							$('<td />').html(data[field])
+					let alink = $('<a />').attr('href', '#').html(obj.title);
+					alink.click(linkClickCallBack);
+					tr.click(function() {
+						console.log('tr클릭.');
+					});
+								
+					tr.append(
+						$('<td />').html(obj.num),
+						$('<td />').html(obj.author),
+						$('<td />').append(alink),
+						$('<td />').html(obj.fileName),
+						$('<td />').html(obj.day),
+						$('<td />').append($btns = $('<button />').html('삭제').click(delrow))
 						);
-					}
 					tbl.append(tr);
-				}
-				
+					}
 				$('#show').append(tbl);	
 			},
 			error: function(reject) {
 				console.log(reject);
 			}
 		});
+		
+		// button 눌렀을 때 한 행 삭제되는 기능
+		function delrow(e) {	
+			e.preventDefault();	// default 기능 차단
+			e.stopPropagation();	// 이벤트 전파 차단
+			
+			let num = $(this).parent().parent().children().eq(0).html();
+			let del = $(this).parent().parent();
+			console.log(num);
+			
+			//DB에서 삭제
+			$.ajax({
+				url: '../fileDeleteServlet',	// 삭제 서블릿 만들어서 연결해줌.
+				data: 'num='+num,	// file number 값을 넣어줌.
+				type: 'get',	// FileDeleteServlet의 doGet에서 받아옴.
+				success: function(result) {
+						del.remove();	// 잘 가~~
+				},
+				error: function(reject) {
+					console.log(reject)
+				}
+			});
+		}
+		
+		//링크를 클릭했을 때 실행될 callBack 함수
+		function linkClickCallBack(e) {
+//			console.log('a클릭 ', $(this).parentsuntil('table').eq(0).children().eq(0).html());
+			let num = $(this).parent().parent().children().eq(0).html();
+//										  ┌><td>num</td>
+			num = $(this).parent().prev().prev().html();
+			// 		└>a 태그 └>td 태그 └><td>author</td>
+
+			e.preventDefault();	// default 기능 차단
+			e.stopPropagation();	// 이벤트 전파 차단
+			$.ajax({
+				url: '../getFileServlet',	// 호출할 페이지 (서블릿)
+				data: 'num=' +  num,
+				dataType: 'json',
+				type: 'get',
+				success: function(result) {
+					console.log(result);
+					//화면에 가져온 정보를 보여주도록 하자.
+					$('#num').val(result.num);
+					$('#author').val(result.author);
+					$('#title').val(result.title);
+					$('#img').attr('src','../upload/'+result.fileName);
+				},
+				error: function(reject) {
+					console.log(reject)
+				}
+			});
+		}
+		
+		//테이블 타이틀 붙이기 함수
+ 		function getTitle() {
+			let $title = $('<tr />')
+			$title.append(
+				$('<th />').html('번호'),
+				$('<th />').html('저자'),
+				$('<th />').html('제목'),
+				$('<th />').html('파일명'),
+				$('<th />').html('업로드 날짜'),
+				$('<th />').html('기능')
+			);
+			return $title;
+		} 
 		
 		// 파일을 선택하면 이미지가 나타나도록 하는 부분
 		$('#filename').change(function () {
@@ -68,6 +146,23 @@
 				data: data,
 				success: function(result) {
 					console.log(result);
+					
+					// 파일 추가 하면 화면에 바로 테이블 행 추가해주기.
+					let $trTag = $('<tr />');
+					//title에 똑같이 a링크 걸어주고여
+					let alink = $('<a />').attr('href', '#').html(result.title);
+					alink.click(linkClickCallBack);
+					// 하나하나 tr에 append 시켜 줍시다! button까지 싹-다
+					$trTag.append(
+						$('<td />').html(result.num),
+						$('<td />').html(result.author),
+						$('<td />').append(alink),
+						$('<td />').html(result.fileName),
+						$('<td />').html(result.day),
+						$('<td />').append($btns = $('<button />').html('삭제').click(delrow))	
+					);
+					$('#tbl').append($trTag);
+					
 				},
 				error: function(reject) {
 					console.log(reject);
@@ -81,7 +176,6 @@
 	<h1>Ajax 파일 업로드</h1>
 	<!--  				  										┌> file이 넘어가면 이거 꼭 있어줘야 함 -->
 	<form id='frm' action='../fileUploadServlet' method='post' enctype='multipart/form-data'>
-	<div id = 'show'></div><br><br>
 		<table border="1">
 			<tr>
 				<td><label for="num">번호</label></td>
@@ -102,9 +196,10 @@
 			</tr>
 			<tr>
 				<td colspan="3"><input type="submit"> <input
-					type="reset"></td>
+					type="reset"> <input type="button" value = "수정"></td>
 			</tr>
-		</table>
+		</table><br> <br>
+		<div id='show'></div>
 	</form>
 </body>
 </html>
