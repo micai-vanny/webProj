@@ -14,6 +14,53 @@ public class FileDAO {
 	PreparedStatement psmt;
 	ResultSet rs;
 	
+	public void close() {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (psmt != null) {
+			try {
+				psmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public boolean updateFile(FileVO vo) {
+		conn = DBCon.getConnect();
+		String sql = "update file_board set author = ?, title = ?, file_name=? where num = ?";
+		int modiCnt = 0;
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getAuthor());
+			psmt.setString(2, vo.getTitle());
+			psmt.setString(3, vo.getFileName());
+			psmt.setInt(4, vo.getNum());
+			
+			modiCnt = psmt.executeUpdate();
+			System.out.println(modiCnt + "건이 수정되었습니다.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return modiCnt == 0 ? false : true;
+	}
+	
 	public FileVO delFile(int num) {
 		conn = DBCon.getConnect();
 		String sql = "delete from file_board where num = ?";
@@ -28,27 +75,7 @@ public class FileDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 		return file;
 	}
@@ -73,27 +100,7 @@ public class FileDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 		return file;
 	}
@@ -116,27 +123,7 @@ public class FileDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 		return list;
 	}
@@ -184,27 +171,7 @@ public class FileDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 
 		return file;
