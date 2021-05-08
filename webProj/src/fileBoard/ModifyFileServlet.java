@@ -68,7 +68,7 @@ public class ModifyFileServlet extends HttpServlet {
 			obj.put("retCode", "Success");
 		} else {
 			obj.put("retCode", "Fail");
-		};
+		}
 		response.getWriter().print(obj);
 	}
 
